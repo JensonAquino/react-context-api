@@ -10,12 +10,15 @@ import ProductsPage from "./components/pages/guest/ProductsPage";
 import SingProd from "./components/pages/guest/SingProd";
 import NotFoundPage from "./components/pages/admin/NotFoundPage";
 import CreatePostPage from "./components/pages/admin/CreatePostPage";
+import GlobalContext from "./contexts/GlobalContext";
 
 function App() {
   return (
-    <>
+  
+   <GlobalContext.Provider>
       <BrowserRouter>
         <Routes>
+          {/* guest routes */}
           <Route element={<AppLayout />}>
             <Route index element={<HomePage />} />
             <Route path="/ChiSiamo" element={<ChiSiamo />} />
@@ -24,7 +27,7 @@ function App() {
               <Route index element={<ProductsPage />} />
               <Route path=":id" element={<SingProd />} />
             </Route>
-
+            {/* admin routes */}
             <Route path="/admin">
               <Route path="login" element={<LoginPage />} />
               <Route path="dashboard" element={<DashboardPage />} />
@@ -34,7 +37,9 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-    </>
+   </GlobalContext.Provider>
+     
+    
   );
 }
 
