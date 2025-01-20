@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import PostList from "./components/pages/guest/PostsList";
 import ChiSiamo from "./components/pages/guest/ChiSiamo";
-import NavBar from "./components/NavBar";
+import axios from "axios";
 import HomePage from "./components/pages/guest/HomePage";
 import AppLayout from "./components/AppLayout";
 import LoginPage from "./components/pages/admin/LoginPage";
@@ -11,11 +11,26 @@ import SingProd from "./components/pages/guest/SingProd";
 import NotFoundPage from "./components/pages/admin/NotFoundPage";
 import CreatePostPage from "./components/pages/admin/CreatePostPage";
 import GlobalContext from "./contexts/GlobalContext";
+import { useEffect, useState } from "react";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 function App() {
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    getPosts();
+  }, [])
+  const getPosts = () => {
+    axios.get(`${apiUrl}/posts`).then((resp) => {
+      console.log(resp);
+      setPosts(resp.data.post)
+    })
+  };
+  const globalProValue = {
+    posts
+  }
   return (
   
-   <GlobalContext.Provider>
+   <GlobalContext.Provider value={globalProValue}>
       <BrowserRouter>
         <Routes>
           {/* guest routes */}

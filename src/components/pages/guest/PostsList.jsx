@@ -1,61 +1,13 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useContext } from "react";
+import GlobalContext from "../../../contexts/GlobalContext";
+
 const apiUrl = import.meta.env.VITE_API_URL;
-const initailData = {
-  title: "",
-  content: "",
-  image: "",
-  category: "",
-  isPublished: false,
-}
+
+
 function PostList() {
-  const [posts, setPosts] = useState([]);
-  const [formData, setFormData] = useState(initailData);
 
-  useEffect(() => {
-    getPosts();
-  }, [])
-
-  const getPosts = () => {
-    axios.get(`${apiUrl}/posts`).then((resp) => {
-      console.log(resp);
-      setPosts(resp.data.post)
-    })
-  };
-
-  const handleInputChange = (event) => {
-    const { name, value, type, checked } = event.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
-  };
-
-  const sendPost = (event) => {
-    event.preventDefault();
-    console.log("submit", formData);
-
-    axios.post(`${apiUrl}/posts`, formData).then((resp) => {
-      console.log(resp)
-      const newPost = resp.data;
-
-      const newPosts = [
-        ...posts,
-        newPost
-      ]
-      setPosts(newPosts)
-      setFormData(initailData)
-    })
-  };
-
-  const deletePost = (id) => {
-    console.log("delate", id);
-    axios.delete(`${apiUrl}/posts/${id}`).then((resp) => {
-      console.log(resp)
-      const updatedPosts = menu.filter((post) => post.id != id)
-      setMenu(updatedPosts)
-    })
-  }
+  const {posts} = useContext(GlobalContext);
+  
   return (
     <>
       <div className="container">
